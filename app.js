@@ -8,6 +8,7 @@ import subscriptionRouter from './routs/subscription.routes.js';
 import connectToDatabase from './database/mongodb.js';
 import errorMiddleware from './middlewares/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import arcjetMiddleware from './middlewares/arcjet.middleware.js';
 
 //Inicializa uma aplicação express
 const app = express();
@@ -35,6 +36,9 @@ Sempre que você precisar ler cookies no servidor, como para autenticação, ras
 Exemplo de uso:
 Se o navegador enviar este cabeçalho:
 Cookie: token=abc123; theme=dark;*/
+
+//ARCJET MIDDLEWARE
+app.use(arcjetMiddleware);
 
 //Rotas da API
 app.use('/api/v1/auth', authRouter);
