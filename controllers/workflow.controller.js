@@ -10,6 +10,7 @@ const require = createRequire(import.meta.url);
 const { serve } = require('@upstash/workflow/express'); //serve: Função da Upstash para criar um serviço serverless.
 
 import Subscription from '../models/subscription.model.js';
+import { sendRemiderEmail } from '../utils/send-email.js';
 
 //Array com os dias antes da renovação em que os
 const REMINDERS = [7, 5, 2, 1];
@@ -46,8 +47,15 @@ export const sendReminders = serve(async context => {
         reminderDate
       );
     }
+
     //Depois, dispara o lembrete com triggerReminder.
-    await triggerReminder(context, label`Reminder ${daysBefore} days before`);
+    if (dayjs().isSame(reminderDate, 'day')) {
+      await triggerReminder(
+        context,
+        label`${daysBefore} days before reminder`,
+        subscription
+      );
+    }
   }
 });
 
@@ -67,11 +75,16 @@ const sleepUntilReminder = async (context, label, date) => {
 }; //label: Descrição do lembrete para identificação no log.
 
 //Dispara o lembrete.
-const triggerReminder = async (context, label) => {
+const triggerReminder = async (context, label, subscription) => {
   //context.run: Envolve o envio do lembrete para logging e rastreamento
-  return await context.run(label, () => {
+  return await context.run(label, async () => {
     console.log(`Triggering ${label} reminder`);
     // Aqui poderiam ser incluídos envios de e-mail, SMS, notificações push, etc.
+    await sendRemiderEmail({
+      to: subscription.user.email,
+      type: label,
+      subscription,
+    });
   });
 };
 

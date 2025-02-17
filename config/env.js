@@ -4,7 +4,6 @@ config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
 export const {
   PORT,
-
   NODE_ENV,
   DB_URI,
   JWT_SECRET,
@@ -13,6 +12,7 @@ export const {
   ARCJET_KEY,
   QSTASH_URL,
   QSTASH_TOKEN,
+  EMAIL_PASSWORD,
 } = process.env;
 
 //console.log(process.env);
