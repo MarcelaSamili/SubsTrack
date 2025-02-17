@@ -6,7 +6,7 @@ const userRouter = Router();
 
 userRouter.get('/', getUsers);
 
-userRouter.get('/:id', authorize, getUser);
+userRouter.get('/:id', authorize, getUser); //http://api/v/users/id aqui...
 
 userRouter.post('/', (req, res) => res.send({ title: 'POST new user' }));
 

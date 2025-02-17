@@ -1,6 +1,8 @@
 import { workflowClient } from '../config/upstash.js';
 import Subscription from '../models/subscription.model.js';
 
+const SERVER_URL = process.env.SERVER_URL;
+
 //criação de inscritos
 export const createSubscription = async (req, res, next) => {
   try {
@@ -10,10 +12,13 @@ export const createSubscription = async (req, res, next) => {
       user: req.user._id,
     });
 
-    await workflowClient.trigger(
-      { url, body, headers, workflowRunId, retries },
+    const { workflowRunId } = await workflowClient.trigger(
+      //{ url, body, headers, workflowRunId, retries },
       {
-        url: `${SERVER_URL}`, // (/api/v1/workflows/subscription/reminder)
+        url: `${SERVER_URL}/api/v1/workflows/subscription/remider`,
+        body: JSON.stringify({ subscriptionId: subscription.id }),
+        headers: { 'content-type': 'application/json' },
+        retries: 0,
       }
     );
 
@@ -24,7 +29,7 @@ export const createSubscription = async (req, res, next) => {
   }
 };
 //EXEMPLE BODY
-//http://localhost:5000/api/v1/subscription (POST)
+//http://localhost:5000/api/v1/subscriptions (POST)
 /*"name": "Netflix Brasil",
 	"price": "20.00",
 	"currency": "BRL",

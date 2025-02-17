@@ -7,15 +7,23 @@ import {
 
 const subscriptionRouter = Router();
 
-subscriptionRouter.get('/', (req, res) =>
-  res.send({ title: 'GET all subscriptions' })
+subscriptionRouter.get(
+  '/',
+  (
+    req,
+    res // http://localhost:5000/api/v1/subscriptions (GET)
+  ) => res.send({ title: 'GET all subscriptions' })
 );
 
-subscriptionRouter.get('/:id', (req, res) =>
-  res.send({ title: 'GET subscription details' })
+subscriptionRouter.get(
+  '/:id',
+  (
+    req,
+    res //http://localhost:5000/api/v1/subscriptions/ID DA INSCRIÇÃO (GET)
+  ) => res.send({ title: 'GET subscription details' })
 );
 
-subscriptionRouter.post('/', authorize, createSubscription);
+subscriptionRouter.post('/', authorize, createSubscription); //http://localhost:5000/api/v1/subscriptions (POST)
 
 subscriptionRouter.put('/:id', (req, res) =>
   res.send({ title: 'UPDATE subscription' })

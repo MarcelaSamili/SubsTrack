@@ -12,8 +12,8 @@ const { serve } = require('@upstash/workflow/express'); //serve: Função da Ups
 import Subscription from '../models/subscription.model.js';
 
 //Array com os dias antes da renovação em que os
-const REMINDERS = [7, 5, 3, 1];
-//lembretes serão enviados (7, 5, 3 e 1 dia).
+const REMINDERS = [7, 5, 2, 1];
+//lembretes serão enviados (7, 5, 2 e 1 dia).
 
 export const sendReminders = serve(async context => {
   const { subscriptionId } = context.requestPayload; // Contexto (context): Informações da requisição e métodos da Upstash Workflow.
@@ -42,12 +42,12 @@ export const sendReminders = serve(async context => {
       //Se a data do lembrete for futura, utiliza sleepUntilReminder para pausar o workflow até a data.
       await sleepUntilReminder(
         context,
-        /*label->*/ `Reminder ${daysBefore} days before`,
+        label`Reminder ${daysBefore} days before`,
         reminderDate
       );
     }
     //Depois, dispara o lembrete com triggerReminder.
-    await triggerReminder(context, `Reminder ${daysBefore} days before`);
+    await triggerReminder(context, label`Reminder ${daysBefore} days before`);
   }
 });
 
