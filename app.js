@@ -51,7 +51,7 @@ app.use('/api/v1/workflows', workflowRouter);
 app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
-  res.send('Wlcome to the SubsTrack API');
+  res.send('Welcome to the SubsTrack API');
 });
 
 //Define a porta em que a API vai rodar.
